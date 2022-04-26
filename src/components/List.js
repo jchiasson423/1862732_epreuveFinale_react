@@ -9,7 +9,7 @@ class List extends React.Component {
     render() {
 
         const Liste = this.props.tasks.map((task, index) => (
-            <Task task={task} modifyTask={this.props.modifyTask} deleteTask={this.props.deleteTask} completeTask={this.props.completeTask} />
+            <Task task={task} modifyTask={this.props.modifyTask} deleteTask={this.props.deleteTask} completeTask={this.props.completeTask}/>
         )
         )
 
