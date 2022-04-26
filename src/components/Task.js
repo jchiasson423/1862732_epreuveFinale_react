@@ -18,6 +18,7 @@ class Task extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.modify = this.modify.bind(this);
+        this.complete = this.complete.bind(this);
     }
 
     handleChange(event) {
@@ -44,6 +45,11 @@ class Task extends React.Component {
         this.props.modifyTask(task, this.props.task.id);
     }
 
+    complete() {
+        this.setState({ done: 1 });
+        this.props.completeTask(this.props.task.id)
+    }
+
     render() {
         var completed;
         if (this.state.done == 1) {
@@ -60,7 +66,7 @@ class Task extends React.Component {
                 </tr>
                 <tr>
                     <button
-
+                        onClick={() => this.complete()}
                     >
                         Compléter
                     </button>
@@ -115,7 +121,7 @@ class Task extends React.Component {
                             Modifier
                         </button>
                         <button
-
+                            onClick={() => this.props.deleteTask(this.props.task.id)}
                         >
                             Supprimer
                         </button>

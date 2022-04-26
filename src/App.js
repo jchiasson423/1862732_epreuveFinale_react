@@ -32,6 +32,8 @@ class App extends React.Component {
         this.modifyTask = this.modifyTask.bind(this);
         this.eraseError = this.eraseError.bind(this);
         this.addTask = this.addTask.bind(this);
+        this.deleteTask = this.deleteTask.bind(this);
+        this.completeTask = this.completeTask.bind(this);
     }
 
     eraseError() {
@@ -88,7 +90,7 @@ class App extends React.Component {
 
     getTasks(id) {
         this.setState({ id: id });
-        axios.get('https://api-services-web.mia-assist.ca/task/' + id + '?apiKey=7e8e9eabec3976b632ff533b5b77c7bf48e4a64413e7fbb3762cf957b5c59d42')
+        axios.get('https://api-services-web.mia-assist.ca/task/' + id + '?apiKey=' + this.state.apiKey)
             .then((response) => {
                 const data = response.data;
                 this.setState({ taskList: data });
@@ -168,7 +170,6 @@ class App extends React.Component {
             })
                 .then((response) => {
                     this.setState({ apiError: "Tâche modifiée" });
-                    this.getTasks(this.state.id);
                 })
                 .catch((error) => {
                     const data = error.response.status;
@@ -202,6 +203,7 @@ class App extends React.Component {
             })
                 .then((response) => {
                     this.setState({ apiError: "Tâche ajoutée" });
+                    this.setState({ taskList: null });
                     this.getTasks(this.state.id);
                 })
                 .catch((error) => {
@@ -226,10 +228,29 @@ class App extends React.Component {
     }
 
     deleteTask(id) {
-        axios.get('https://api-services-web.mia-assist.ca/task/' + id + '?apiKey=7e8e9eabec3976b632ff533b5b77c7bf48e4a64413e7fbb3762cf957b5c59d42')
+        axios.delete('https://api-services-web.mia-assist.ca/task/' + this.state.id + '?apiKey=' + this.state.apiKey + "&task_id=" + id)
             .then((response) => {
-                const data = response.data;
-                this.setState({ taskList: data });
+                this.setState({ apiError: "Tâche supprimée" });
+                this.setState({ taskList: null });
+                this.getTasks(this.state.id);
+            })
+            .catch((error) => {
+                let errorText = "Erreur inconnue";
+                if (error.response.status == 404) {
+                    errorText = "Usager introuvable";
+                }
+                else if (error.response.status == 401) {
+                    errorText = "Erreur de connexion à l'API";
+                }
+                this.setState({ apiError: errorText });
+                this.setState({ taskList: null });
+            });
+    }
+
+    completeTask(id) {
+        axios.put('https://api-services-web.mia-assist.ca/taskDone/' + this.state.id + '?apiKey=' + this.state.apiKey + "&task_id=" + id)
+            .then((response) => {
+
             })
             .catch((error) => {
                 let errorText = "Erreur inconnue";
@@ -268,7 +289,7 @@ class App extends React.Component {
 
         var list;
         if (this.state.taskList != null) {
-            list = <List tasks={this.state.taskList} modifyTask={this.modifyTask} />
+            list = <List tasks={this.state.taskList} modifyTask={this.modifyTask} deleteTask={this.deleteTask} completeTask={this.completeTask} />
         }
 
         var page =
