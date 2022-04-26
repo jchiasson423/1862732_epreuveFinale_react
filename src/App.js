@@ -7,6 +7,7 @@ import Task from './components/Task'
 import Error from './components/Error'
 import User from './components/User'
 import List from './components/List'
+import AddTask from './components/AddTask'
 
 class App extends React.Component {
 
@@ -30,6 +31,7 @@ class App extends React.Component {
         this.verifConnect = this.verifConnect.bind(this);
         this.modifyTask = this.modifyTask.bind(this);
         this.eraseError = this.eraseError.bind(this);
+        this.addTask = this.addTask.bind(this);
     }
 
     eraseError() {
@@ -155,7 +157,6 @@ class App extends React.Component {
     }
 
     modifyTask(task, id) {
-        console.log(task.due_time);
         let errorForm = this.verifTask(task, id);
         if (errorForm == "") {
             this.setState({ formError: null });
@@ -190,6 +191,59 @@ class App extends React.Component {
         }
     }
 
+    addTask(task) {
+        let errorForm = this.verifTask(task, 1);
+        if (errorForm == "") {
+            this.setState({ formError: null });
+            axios.post('https://api-services-web.mia-assist.ca/task/' + this.state.id + '?apiKey=' + this.state.apiKey, {
+                due_time: task.due_time,
+                title: task.title,
+                descr: task.descr
+            })
+                .then((response) => {
+                    this.setState({ apiError: "Tâche ajoutée" });
+                    this.getTasks(this.state.id);
+                })
+                .catch((error) => {
+                    const data = error.response.status;
+                    let errorText = "Erreur inconnue";
+                    if (data == 404) {
+                        errorText = "Usager introuvable";
+                    }
+                    else if (data == 401) {
+                        errorText = "Erreur de connexion à l'API";
+                    }
+                    else if (data == 403) {
+                        errorText = "Format des informations fournies incorrect."
+                    }
+                    this.setState({ apiError: errorText });
+                });
+        }
+        else {
+            this.setState({ apiError: null });
+            this.setState({ formError: errorForm });
+        }
+    }
+
+    deleteTask(id) {
+        axios.get('https://api-services-web.mia-assist.ca/task/' + id + '?apiKey=7e8e9eabec3976b632ff533b5b77c7bf48e4a64413e7fbb3762cf957b5c59d42')
+            .then((response) => {
+                const data = response.data;
+                this.setState({ taskList: data });
+            })
+            .catch((error) => {
+                let errorText = "Erreur inconnue";
+                if (error.response.status == 404) {
+                    errorText = "Usager introuvable";
+                }
+                else if (error.response.status == 401) {
+                    errorText = "Erreur de connexion à l'API";
+                }
+                this.setState({ apiError: errorText });
+                this.setState({ taskList: null });
+            });
+    }
+
     render() {
         var erreurApi;
         if (this.state.apiError != null) {
@@ -203,8 +257,10 @@ class App extends React.Component {
 
         var user;
         var connexion;
+        var addTask;
         if (this.state.user != null) {
             user = <User pseudo={this.state.user} disconnect={this.disconnect} />;
+            addTask = <AddTask addTask={this.addTask} />;
         }
         else {
             connexion = <Connection userConnect={this.userConnect} />
@@ -221,6 +277,7 @@ class App extends React.Component {
                 {user}
                 {erreurForm}
                 {erreurApi}
+                {addTask}
                 {list}
             </div>;
 
