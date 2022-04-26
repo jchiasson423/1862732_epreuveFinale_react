@@ -29,6 +29,12 @@ class App extends React.Component {
         this.verifTask = this.verifTask.bind(this);
         this.verifConnect = this.verifConnect.bind(this);
         this.modifyTask = this.modifyTask.bind(this);
+        this.eraseError = this.eraseError.bind(this);
+    }
+
+    eraseError() {
+        this.setState({ apiError: null });
+        this.setState({ formError: null });
     }
 
     userConnect(pseudo, password) {
@@ -187,12 +193,12 @@ class App extends React.Component {
     render() {
         var erreurApi;
         if (this.state.apiError != null) {
-            erreurApi = <Error error={this.state.apiError} />
+            erreurApi = <Error error={this.state.apiError} eraseError={this.eraseError} />
         }
 
         var erreurForm;
         if (this.state.formError != null) {
-            erreurForm = <Error error={this.state.formError} />
+            erreurForm = <Error error={this.state.formError} eraseError={this.eraseError} />
         }
 
         var user;
