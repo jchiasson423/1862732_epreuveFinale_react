@@ -30,7 +30,7 @@ class Task extends React.Component {
     }
 
     modify() {
-        var table = this.props.task.due_time.split("", 16);
+        var table = this.state.due_time.split("", 16);
         table[10] = " ";
         var datetime = table.join("");
         datetime += ":00";
