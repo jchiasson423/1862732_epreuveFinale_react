@@ -8,6 +8,7 @@ import Error from './components/Error'
 import User from './components/User'
 import List from './components/List'
 import AddTask from './components/AddTask'
+import RandomImage from './components/RandomImage'
 
 class App extends React.Component {
 
@@ -294,6 +295,7 @@ class App extends React.Component {
 
         var page =
             <div className="App">
+                <RandomImage/>
                 {connexion}
                 {user}
                 {erreurForm}

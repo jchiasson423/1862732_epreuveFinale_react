@@ -43,7 +43,7 @@ class AddTask extends React.Component {
                 <div className='box_saisie box_saisie_main'>
                     <table>
                         <tr>
-                            <h1>Ajouter une tâche</h1>
+                            <h1>Ajouter une tache</h1>
                         </tr>
                         <tr>
                             <label htmlFor='titreMainBox'>Titre</label>
@@ -86,7 +86,7 @@ class AddTask extends React.Component {
                             <button
                                 onClick={() => this.add()}
                             >
-                                Ajouter la tâche
+                                Ajouter la tache
                             </button>
                         </tr>
                     </table>

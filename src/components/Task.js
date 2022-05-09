@@ -127,7 +127,7 @@ class Task extends React.Component {
                         </button>
                     </tr>
                 </table>
-
+                <hr/>
             </tr>
         );
     }
