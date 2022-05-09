@@ -10,6 +10,9 @@ import List from './components/List'
 import AddTask from './components/AddTask'
 import RandomImage from './components/RandomImage'
 
+/**
+ * Application générale
+ * */
 class App extends React.Component {
 
     constructor() {
@@ -37,11 +40,19 @@ class App extends React.Component {
         this.completeTask = this.completeTask.bind(this);
     }
 
+    /**
+     * Efface les erreurs présentes
+     * */
     eraseError() {
         this.setState({ apiError: null });
         this.setState({ formError: null });
     }
 
+    /**
+     * Connecte un user à sa liste de tâches
+     * @param {any} pseudo pseudo du user
+     * @param {any} password mot de passe du user
+     */
     userConnect(pseudo, password) {
         let errorForm = this.verifConnect(pseudo, password);
         if (errorForm == "") {
@@ -81,6 +92,9 @@ class App extends React.Component {
         }
     }
 
+    /**
+     * Déconnecte un user
+     * */
     disconnect() {
         this.setState({ user: null });
         this.setState({ id: 0 });
@@ -89,6 +103,10 @@ class App extends React.Component {
         this.setState({ formError: null });
     }
 
+    /**
+     * Va chercher les tâches d'un user dans un api
+     * @param {any} id id du user
+     */
     getTasks(id) {
         this.setState({ id: id });
         axios.get('https://api-services-web.mia-assist.ca/task/' + id + '?apiKey=' + this.state.apiKey)
@@ -109,6 +127,11 @@ class App extends React.Component {
             });
     }
 
+    /**
+     * Vérifie les données des formulaires des tâches
+     * @param {any} task la tâche
+     * @param {any} id l'id de la tâche
+     */
     verifTask(task, id) {
         var error = "";
         if (!id) {
@@ -145,6 +168,11 @@ class App extends React.Component {
         return error;
     }
 
+    /**
+     * Vérifie le formulaire de connexion du user
+     * @param {any} pseudo pseudo du user
+     * @param {any} password mot de passe du user
+     */
     verifConnect(pseudo, password) {
         var error = "";
 
@@ -159,6 +187,11 @@ class App extends React.Component {
         return error;
     }
 
+    /**
+     * Modifie une tâche dans l'api
+     * @param {any} task la tâche
+     * @param {any} id id de la tâche
+     */
     modifyTask(task, id) {
         let errorForm = this.verifTask(task, id);
         if (errorForm == "") {
@@ -193,6 +226,10 @@ class App extends React.Component {
         }
     }
 
+    /**
+     * Ajoute une tâche dans l'Api
+     * @param {any} task la tâche
+     */
     addTask(task) {
         let errorForm = this.verifTask(task, 1);
         if (errorForm == "") {
@@ -228,6 +265,10 @@ class App extends React.Component {
         }
     }
 
+    /**
+     * Supprime une tâche dans l'api
+     * @param {any} id id de la tâche
+     */
     deleteTask(id) {
         axios.delete('https://api-services-web.mia-assist.ca/task/' + this.state.id + '?apiKey=' + this.state.apiKey + "&task_id=" + id)
             .then((response) => {
@@ -248,6 +289,10 @@ class App extends React.Component {
             });
     }
 
+    /**
+     * Complete une tâche dans l'Api
+     * @param {any} id id de la tâche
+     */
     completeTask(id) {
         axios.put('https://api-services-web.mia-assist.ca/taskDone/' + this.state.id + '?apiKey=' + this.state.apiKey + "&task_id=" + id)
             .then((response) => {
@@ -266,6 +311,9 @@ class App extends React.Component {
             });
     }
 
+    /**
+     * Rendu de l'application
+     * */
     render() {
         var erreurApi;
         if (this.state.apiError != null) {

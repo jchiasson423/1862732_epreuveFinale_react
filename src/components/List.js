@@ -2,10 +2,17 @@
 import "../App.css";
 import Task from './Task';
 
+/**
+ * Liste des tâches
+ * */
 class List extends React.Component {
     constructor(props) {
         super(props);
     }
+
+    /**
+     * Rendu de la composante
+     * */
     render() {
 
         const Liste = this.props.tasks.map((task, index) => (

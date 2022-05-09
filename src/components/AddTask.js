@@ -1,6 +1,9 @@
 import React from 'react';
 import "../App.css";
 
+/**
+ * Formulaire d'ajout d'une tâche
+ * */
 class AddTask extends React.Component {
     constructor(props) {
         super(props);
@@ -13,6 +16,10 @@ class AddTask extends React.Component {
         this.add = this.add.bind(this);
     }
 
+    /**
+     * Changement des variables d'état
+     * @param {any} event évènement de changement
+     */
     handleChange(event) {
         const name = event.target.name;
         const value = event.target.value;
@@ -22,6 +29,9 @@ class AddTask extends React.Component {
         });
     }
 
+    /**
+     * Ajoute une tâche à la liste
+     * */
     add() {
         var table = this.state.due_time.split("", 16);
         table[10] = " ";
@@ -37,6 +47,9 @@ class AddTask extends React.Component {
         this.props.addTask(task);
     }
 
+    /**
+     * Rendu de la composante
+     * */
     render() {
         return (
             <div className='box'>

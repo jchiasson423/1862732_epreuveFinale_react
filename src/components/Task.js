@@ -1,6 +1,9 @@
 ﻿import React from 'react';
 import "../App.css";
 
+/**
+ * Affichage et formulaire d'une tâche
+ * */
 class Task extends React.Component {
     constructor(props) {
         super(props);
@@ -21,6 +24,10 @@ class Task extends React.Component {
         this.complete = this.complete.bind(this);
     }
 
+    /**
+     * Changement des variables d'état
+     * @param {any} event évènement de changement
+     */
     handleChange(event) {
         const name = event.target.name;
         const value = event.target.value;
@@ -30,6 +37,9 @@ class Task extends React.Component {
         });
     }
 
+    /**
+     * Modifie une tâche
+     * */
     modify() {
         var table = this.state.due_time.split("", 16);
         table[10] = " ";
@@ -45,11 +55,17 @@ class Task extends React.Component {
         this.props.modifyTask(task, this.props.task.id);
     }
 
+    /**
+     * Complète une tâche
+     * */
     complete() {
         this.setState({ done: 1 });
         this.props.completeTask(this.props.task.id)
     }
 
+    /**
+     * Rendu de la composante
+     * */
     render() {
         var completed;
         if (this.state.done == 1) {

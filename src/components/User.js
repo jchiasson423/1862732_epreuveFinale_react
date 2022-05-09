@@ -1,10 +1,16 @@
 ﻿import React from 'react';
 import "../App.css";
-
+/**
+ * Affichage du user connecté
+ * */
 class User extends React.Component {
     constructor(props) {
         super(props);
     }
+
+    /**
+     * Rendu de la composante
+     * */
     render() {
         return (
             <div className='box' id='User'>

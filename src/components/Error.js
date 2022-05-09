@@ -1,10 +1,17 @@
 ﻿import React from 'react';
 import "../App.css";
 
+/**
+ * Affichage des erreurs
+ * */
 class Error extends React.Component {
     constructor(props) {
         super(props);
     }
+
+    /**
+     * Rendu de la composante
+     * */
     render() {
         return (
             <div className='box' id='error'>
